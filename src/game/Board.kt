@@ -1,14 +1,14 @@
-package com.boardgame.board
+package com.boardgame.game
 
-import com.boardgame.IntVector2D
-import com.boardgame.figure.Figure
+import com.boardgame.game.vector.IntVector2D
+import com.boardgame.game.chess.figure.Figure
 
 class Board(
     val width: Int,
     val height: Int
 ) {
-    private val data: Array<Figure?> = arrayOfNulls(width * height)
-    private var turn: Int = 0
+    var data: Array<Figure?> = arrayOfNulls(width * height)
+        private set
 
     operator fun get(x: Int, y: Int): Figure? {
         return data[y * width + x]
@@ -26,26 +26,15 @@ class Board(
         setFigure(pos, figure)
     }
 
-    fun firstTurn(): Boolean {
-        return turn == 0
-    }
-
-    fun evenTurn(): Boolean {
-        return turn % 2 == 0
-    }
-
-    fun oddTurn(): Boolean {
-        return turn % 2 == 1
-    }
-
     fun hasPos(pos: IntVector2D): Boolean {
         return pos.x >= 0 && pos.y >= 0 && pos.x < width && pos.y < height
     }
 
+    fun clear() {
+        data = arrayOfNulls(width * height)
+    }
+
     private fun setFigure(pos: IntVector2D, figure: Figure?) {
-        if (figure != null)
-            data[figure.pos.y * width + figure.pos.x] = null
-        figure?.pos = pos
         data[pos.y * width + pos.x] = figure
     }
 
